@@ -16,7 +16,7 @@ copia() {
     local nombre_copia="copia_usuarios_${fecha}.zip"
     zip "$nombre_copia" usuarios.csv > /dev/null
     echo "Copia de seguridad creada: $nombre_copia"
-    
+
     # Mantener solo las dos copias más recientes
     if [ $(ls copia_usuarios_*.zip | wc -l) -gt 2 ]; then
         ls -t copia_usuarios_*.zip | tail -n +3 | xargs rm
@@ -30,11 +30,11 @@ copia() {
 copia() {
     local fecha=$(date +"%d%m%Y_%H-%M-%S")
     local nombre_copia="copia_usuarios_${fecha}.zip"
-    
+
     # Crear la copia de seguridad en un archivo .zip
     zip "$nombre_copia" usuarios.csv > /dev/null
     echo "Copia de seguridad creada: $nombre_copia"
-    
+
     # Verificar si hay más de dos archivos de copia de seguridad
     if [ $(ls copia_usuarios_*.zip 2> /dev/null | wc -l) -gt 2 ]; then
         # Si existen más de dos copias, elimina las más antiguas
@@ -50,10 +50,10 @@ alta() {
     read -p "Primer apellido: " apellido1
     read -p "Segundo apellido: " apellido2
     read -p "DNI (8 dígitos y una letra): " dni
-    
+
     # Generar nombre de usuario
     username=$(echo "${nombre:0:1}${apellido1:0:3}${apellido2:0:3}${dni: -3}" | tr '[:upper:]' '[:lower:]')
-    
+
     # Verificar si el usuario ya existe
     if grep -q ":$username$" usuarios.csv; then
         echo "El usuario ya existe."
@@ -92,7 +92,7 @@ login() {
     for i in {1..3}; do
         read -sp "Ingrese su nombre de usuario: " username
         echo
-        
+
         # Permitir acceso a "admin" o verificar existencia en usuarios.csv
         if [ "$username" == "admin" ] || grep -q ":$username$" usuarios.csv; then
             echo "Acceso concedido. Bienvenido, $username!"
